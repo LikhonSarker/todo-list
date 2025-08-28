@@ -2,6 +2,7 @@
 
 class Database
 {
+    private static ?Database $instance = null;
     private $host = "localhost";
     private $db_name = "todo_list";
     private $username = "root";
@@ -9,7 +10,7 @@ class Database
     private $port = "3307";
     public $conn;
 
-    public function getConnection()
+    private function __construct()
     {
         $this->conn = null;
 
@@ -25,7 +26,19 @@ class Database
             echo "Connection error: " . $exception->getMessage(). $exception->getCode();
         }
 
-        return $this->conn;
+    }
 
+    public static function getInstance(): Database
+    {
+        if (self::$instance === null) {
+            self::$instance = new Database();
+        }
+
+        return self::$instance;
+    }
+
+    public function getConnection()
+    {
+        return $this->conn;
     }
 }
