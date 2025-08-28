@@ -20,7 +20,3 @@ CREATE TABLE tasks (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
-
--- Test user: password is 12345 hashed with password_hash
-INSERT INTO users (username, email, password)
-VALUES ('testuser', 'test@example.com', '$2y$10$wI4HYyqcf1l5EfxsJ4Z1xeN0e3CZgE4.vTLQ7dVPCoxp2xTwU3zVi');
