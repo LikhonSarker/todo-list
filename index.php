@@ -51,4 +51,8 @@ $router->register("/logout", function () use ($authController) {
     $authController->logout();
 });
 
-$router->resolve($route);
+try {
+    $router->resolve($route);
+} catch (RouteNotFoundException $e) {
+    echo "404 not found";
+}
