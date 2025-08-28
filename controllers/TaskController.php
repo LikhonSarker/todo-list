@@ -38,7 +38,7 @@ class TaskController
         $this->taskModel->addTask($userId, $title, $description, $due_date);
     }
 
-    public function getTasksByUser($status = null)
+    public function getTasksByUser($status = null, $due_date = null)
     {
         if (!isset($_SESSION['user_id'])) {
             header("Location: login");
@@ -47,7 +47,7 @@ class TaskController
 
         $userId = $_SESSION['user_id'];
 
-        return $this->taskModel->getTasksByUser($userId, $status);
+        return $this->taskModel->getTasksByUser($userId, $status, $due_date);
 
     }
 

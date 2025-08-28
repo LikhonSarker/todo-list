@@ -12,7 +12,7 @@ class Task
         $this->conn = $database->getConnection();
     }
 
-    public function getTasksByUser($userId, $status = null)
+    public function getTasksByUser($userId, $status = null, $due_date = null)
     {
         $query = "SELECT * FROM tasks WHERE user_id = :user_id";
 
@@ -20,12 +20,22 @@ class Task
             $query .= " AND status = :status";
         }
 
+        if ($due_date) {
+            $query .= " AND due_date = :due_date";
+        }
+
+
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
 
         if ($status) {
             $stmt->bindParam(':status', $status, PDO::PARAM_STR);
         }
+
+        if ($due_date) {
+            $stmt->bindParam(':due_date', $due_date, PDO::PARAM_STR);
+        }
+
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

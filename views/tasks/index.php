@@ -8,8 +8,11 @@ if (!isset($_SESSION['user_id'])) {
 require_once __DIR__ . '/../../controllers/TaskController.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $status = $_GET['status'] ?? '';
+    $due_date = $_GET['due_date'] ?? '';
+
     $taskController = new TaskController();
-    $tasks = $taskController->getTasksByUser();
+    $tasks = $taskController->getTasksByUser($status, $due_date);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -57,7 +60,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </button>
                 
             </div>
-
+            <form method="GET" style="margin-bottom: 15px; display:flex; gap:10px; align-items:center;">
+                <label>Status:
+                    <select name="status">
+                        <option value="" <?php if ($status == '') {
+                            echo 'selected';
+                        } ?>>All</option>
+                        <option value="pending" <?php if ($status == 'pending') {
+                            echo 'selected';
+                        } ?>>Pending</option>
+                        <option value="completed" <?php if ($status == 'completed') {
+                            echo 'selected';
+                        } ?>>Completed</option>
+                    </select>
+                </label>
+                <label>Due Date:
+                    <input type="date" name="due_date" value="<?php echo htmlspecialchars($due_date); ?>">
+                </label>
+                <button type="submit" style="cursor:pointer;">Filter</button>
+            </form>
 
             <table border="1" cellpadding="5" cellspacing="0">
                 <tr>
